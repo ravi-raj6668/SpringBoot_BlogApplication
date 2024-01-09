@@ -1,8 +1,9 @@
 package io.innodev.blogapp.controller;
 
 import io.innodev.blogapp.entity.Message;
-import io.innodev.blogapp.entity.UserDTO;
+import io.innodev.blogapp.payloads.UserDTO;
 import io.innodev.blogapp.service.IUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,15 +29,19 @@ public class UserController {
         return "Application started successfully";
     }
 
+    @PostMapping("/test-request")
+    public ResponseEntity<String> testPostRequest() {
+        return ResponseEntity.ok("POST request successful");
+    }
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createUser = userService.createUser(userDTO);
         return new ResponseEntity<>(createUser, HttpStatus.CREATED);
     }
     // update user
 
     @PutMapping(value = "/updateUser/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Integer id) {
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO, @PathVariable Integer id) {
         UserDTO updatedUser = userService.updateUser(userDTO, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
@@ -45,7 +50,7 @@ public class UserController {
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity<Message> deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);
-        return new ResponseEntity<>(new Message("User Deleted successfully with id : " + userId, true, new Date().toGMTString()), HttpStatus.OK);
+        return new ResponseEntity<>(new Message("User Deleted successfully with id : " + userId, true, new Date().toString()), HttpStatus.OK);
     }
 
     //getUser
@@ -57,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/getUser/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id) {
         UserDTO user = userService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

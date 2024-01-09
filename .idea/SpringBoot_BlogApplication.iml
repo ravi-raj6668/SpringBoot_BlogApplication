@@ -16,6 +16,7 @@
     </facet>
   </component>
   <component name="SonarLintModuleSettings">
+    <option name="idePathPrefix" value="SpringBoot_BlogApplication" />
     <option name="uniqueId" value="bd8965dc-24b0-4b92-be35-71320ba46218" />
   </component>
 </module>

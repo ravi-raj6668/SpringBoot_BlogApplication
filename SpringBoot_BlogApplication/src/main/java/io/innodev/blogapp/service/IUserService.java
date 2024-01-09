@@ -1,6 +1,6 @@
 package io.innodev.blogapp.service;
 
-import io.innodev.blogapp.entity.UserDTO;
+import io.innodev.blogapp.payloads.UserDTO;
 
 import java.util.List;
 

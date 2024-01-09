@@ -1,11 +1,10 @@
 package io.innodev.blogapp.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
-
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Message {
     private String messages;

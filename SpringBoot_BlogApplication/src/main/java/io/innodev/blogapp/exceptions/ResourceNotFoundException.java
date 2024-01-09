@@ -1,12 +1,14 @@
 package io.innodev.blogapp.exceptions;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ResourceNotFoundException extends RuntimeException {
-    private String resourceName;
-    private String fieldName;
-    private long fieldValue;
+    private final String resourceName;
+    private final String fieldName;
+    private final long fieldValue;
 
     /**
      * Constructs a new runtime exception with the specified detail message.

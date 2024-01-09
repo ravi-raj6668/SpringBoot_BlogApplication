@@ -1,9 +1,9 @@
 package io.innodev.blogapp.service;
 
-import io.innodev.blogapp.config.UserModelMapper;
+import io.innodev.blogapp.config.ModelMapperUtil;
 import io.innodev.blogapp.entity.User;
-import io.innodev.blogapp.entity.UserDTO;
 import io.innodev.blogapp.exceptions.ResourceNotFoundException;
+import io.innodev.blogapp.payloads.UserDTO;
 import io.innodev.blogapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
 
-    private final UserModelMapper userModelMapper;
+    private final ModelMapperUtil modelMapperUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserModelMapper userModelMapper) {
+    public UserService(UserRepository userRepository, ModelMapperUtil modelMapperUtil) {
         this.userRepository = userRepository;
-        this.userModelMapper = userModelMapper;
+        this.modelMapperUtil = modelMapperUtil;
     }
 
 
@@ -38,8 +38,8 @@ public class UserService implements IUserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setAbout(userDTO.getAbout());
-
-        return userToDTO(user);
+        User updatedUser = userRepository.save(user);
+        return userToDTO(updatedUser);
     }
 
     @Override
@@ -61,10 +61,10 @@ public class UserService implements IUserService {
     }
 
     public User dtoToUser(UserDTO userDTO) {
-        return userModelMapper.modelMapper().map(userDTO, User.class);
+        return modelMapperUtil.modelMapper().map(userDTO, User.class);
     }
 
     public UserDTO userToDTO(User user) {
-        return userModelMapper.modelMapper().map(user, UserDTO.class);
+        return modelMapperUtil.modelMapper().map(user, UserDTO.class);
     }
 }
