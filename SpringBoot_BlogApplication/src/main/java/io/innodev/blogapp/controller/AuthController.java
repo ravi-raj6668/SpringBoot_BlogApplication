@@ -51,6 +51,7 @@ public class AuthController {
         }
     }
 
+    //creating custom exception
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
         return "Credentials Invalid !!";
