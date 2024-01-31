@@ -24,6 +24,6 @@ public class SpringBootBlogApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-		log.info("Result {} value : ",passwordEncoder.encode(""));
+		log.info("Result {} value : ",passwordEncoder.encode("saras123"));
     }
 }

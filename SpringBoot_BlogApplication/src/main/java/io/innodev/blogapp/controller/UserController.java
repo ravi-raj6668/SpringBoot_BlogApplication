@@ -4,15 +4,19 @@ import io.innodev.blogapp.entity.Message;
 import io.innodev.blogapp.payloads.UserDTO;
 import io.innodev.blogapp.service.IUserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("api/v1/blog-app/users")
 public class UserController {
@@ -47,6 +51,7 @@ public class UserController {
     }
 
     //delete user
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity<Message> deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);
@@ -58,6 +63,7 @@ public class UserController {
     @GetMapping(value = "/getAllUsers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDTO>> getAllUser() {
         List<UserDTO> allUsers = userService.getAllUsers();
+        log.info("List of all users {} : ", allUsers.toString());
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 

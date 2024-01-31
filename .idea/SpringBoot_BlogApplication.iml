@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
-  <component name="AdditionalModuleElements">
-    <content url="file://$MODULE_DIR$" />
-  </component>
-  <component name="FacetManager">
-    <facet type="jpa" name="JPA">
-      <configuration>
-        <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping>
-          <factory-entry name="entityManagerFactory" value="f023dfff-13cf-4b75-aa46-3d933229ef43" />
-        </datasource-mapping>
-        <naming-strategy-map />
-      </configuration>
-    </facet>
-  </component>
   <component name="SonarLintModuleSettings">
-    <option name="idePathPrefix" value="SpringBoot_BlogApplication" />
-    <option name="uniqueId" value="bd8965dc-24b0-4b92-be35-71320ba46218" />
+    <option name="uniqueId" value="4adccbaa-d611-4712-aa78-7493908dfcec" />
   </component>
 </module>

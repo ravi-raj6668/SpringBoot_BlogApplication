@@ -1,9 +1,9 @@
 package io.innodev.blogapp.controller;
 
-import io.innodev.blogapp.security.config.JwtHelper;
-import io.innodev.blogapp.security.config.UserSecurityUtil;
-import io.innodev.blogapp.security.entity.JwtRequest;
-import io.innodev.blogapp.security.entity.JwtResponse;
+import io.innodev.blogapp.security.JwtHelper;
+import io.innodev.blogapp.security.UserSecurityUtil;
+import io.innodev.blogapp.security.JwtRequest;
+import io.innodev.blogapp.security.JwtResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
