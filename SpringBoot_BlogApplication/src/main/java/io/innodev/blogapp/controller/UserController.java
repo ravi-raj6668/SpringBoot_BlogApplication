@@ -3,11 +3,10 @@ package io.innodev.blogapp.controller;
 import io.innodev.blogapp.entity.Message;
 import io.innodev.blogapp.payloads.UserDTO;
 import io.innodev.blogapp.service.IUserService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +48,11 @@ public class UserController {
         UserDTO updatedUser = userService.updateUser(userDTO, id);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
-
+//TODO: need to implement the method level security.
     //delete user
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @Secured("ADMIN_USER")
+//@PreAuthorize("hasAnyAuthority('ADMIN_USER')")
     @DeleteMapping("/deleteUser/{userId}")
     public ResponseEntity<Message> deleteUser(@PathVariable Integer userId) {
         userService.deleteUser(userId);

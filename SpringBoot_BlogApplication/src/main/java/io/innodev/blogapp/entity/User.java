@@ -1,5 +1,7 @@
 package io.innodev.blogapp.entity;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +29,7 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Hidden
     private String name;
     private String email;
     private String password;
@@ -35,19 +38,16 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private transient List<Post> postList = new ArrayList<>();
 
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "blog_users", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map((role -> new SimpleGrantedAuthority(role.getRoleName()))).toList();
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
     }
 
     @Override

@@ -14,11 +14,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)
+@EnableWebMvc
+@EnableMethodSecurity
 public class SecurityConfigUsingJwt {
+
+    protected static final String[] PUBLIC_URLS = {
+            "api/auth/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+
+    };
 
     private final UserSecurityUtil userSecurityUtil;
     private final JwtAuthenticationFilter authenticationFilter;
@@ -35,8 +46,8 @@ public class SecurityConfigUsingJwt {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("api/**").authenticated().requestMatchers("auth/login").permitAll()
+                .cors(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize-> authorize.requestMatchers(PUBLIC_URLS).permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("api/**").authenticated().requestMatchers(PUBLIC_URLS).permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userSecurityUtil)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))

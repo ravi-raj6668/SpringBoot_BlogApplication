@@ -3,14 +3,12 @@ package io.innodev.blogapp.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -18,11 +16,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Component
 @PropertySource("classpath:application.properties")
 public class JwtHelper {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60L * 60;
+//    public static final long JWT_TOKEN_VALIDITY = 5 * 60L * 60;
+
+    public static final long JWT_TOKEN_VALIDITY = (long) 5 * 100;
 
 //    @Value("${SECRET_KEY}")
     private static final String secretKey = "Testuser@innssssssssssdffffffffaaaaaaaaaaaaawwwwwwwwwwww@@@@@@@@@@@444444444444FFFFFFFFFFFFFFFFaaaaaaaaaaaaaaqqqqqqqqqqqjjjjjjjjjjvvvvvvvvvvvvodev"; //Need to check this will give error because I read the secret key from properties file
@@ -77,7 +78,7 @@ public class JwtHelper {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
 
-        System.out.println("Generated Token: " + token); // Add this line for debugging
+        log.info("Generated Token {} : " , token); // Add this line for debugging
 
         return token;
     }

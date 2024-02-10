@@ -15,4 +15,7 @@ public interface IUserService {
     List<UserDTO> getAllUsers();
 
     public void deleteUser(Integer usedId);
+
+    public UserDTO registerNewUser(UserDTO userDTO);
+
 }

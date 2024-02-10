@@ -1,11 +1,15 @@
 package io.innodev.blogapp.service;
 
+import io.innodev.blogapp.config.Constant;
 import io.innodev.blogapp.config.ModelMapperUtil;
+import io.innodev.blogapp.entity.Role;
 import io.innodev.blogapp.entity.User;
 import io.innodev.blogapp.exceptions.ResourceNotFoundException;
 import io.innodev.blogapp.payloads.UserDTO;
+import io.innodev.blogapp.repository.RoleRepository;
 import io.innodev.blogapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +21,29 @@ public class UserService implements IUserService {
 
     private final ModelMapperUtil modelMapperUtil;
 
+    private final PasswordEncoder passwordEncoder;
+
+    private final RoleRepository roleRepository;
+
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapperUtil modelMapperUtil) {
+    public UserService(UserRepository userRepository, ModelMapperUtil modelMapperUtil, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.modelMapperUtil = modelMapperUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = dtoToUser(userDTO);
+        User user = modelMapperUtil.modelMapper().map(userDTO, User.class);
+
+        //encoded the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //roles
+        Role role = roleRepository.findById(Constant.ROLE_ADMIN).get();
+        user.getRoles().add(role);
         User saveUser = userRepository.save(user);
         return userToDTO(saveUser);
     }
@@ -58,6 +75,20 @@ public class UserService implements IUserService {
     public void deleteUser(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         userRepository.delete(user);
+    }
+
+    @Override
+    public UserDTO registerNewUser(UserDTO userDTO) {
+        User user = modelMapperUtil.modelMapper().map(userDTO, User.class);
+
+        //encoded the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //roles
+        Role role = roleRepository.findById(Constant.ROLE_TEST_USER).get();
+        user.getRoles().add(role);
+        User newsUser = userRepository.save(user);
+        return modelMapperUtil.modelMapper().map(newsUser, UserDTO.class);
     }
 
     public User dtoToUser(UserDTO userDTO) {
